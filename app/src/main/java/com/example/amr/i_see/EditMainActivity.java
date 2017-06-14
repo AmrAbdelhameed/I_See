@@ -47,24 +47,14 @@ public class EditMainActivity extends AppCompatActivity {
                     finish();
                 } else {
 
-                    SharedPreferences preferences = getSharedPreferences(Config.SHARED_PREF_NAME, Context.MODE_PRIVATE);
-
-                    SharedPreferences.Editor editor = preferences.edit();
-
-                    editor.putBoolean(Config.LOGGEDIN_SHARED_PREF, false);
-
-                    editor.putString(Config.EMAIL_SHARED_PREF, "");
-
-                    editor.commit();
-
                     SharedPreferences sharedPreferences = EditMainActivity.this.getSharedPreferences(Config.SHARED_PREF_NAME, Context.MODE_PRIVATE);
 
-                    SharedPreferences.Editor editor2 = sharedPreferences.edit();
+                    SharedPreferences.Editor editor = sharedPreferences.edit();
 
-                    editor2.putBoolean(Config.LOGGEDIN_SHARED_PREF, true);
-                    editor2.putString(Config.EMAIL_SHARED_PREF, mobilenumber.getText().toString());
+                    editor.putBoolean(Config.LOGGEDIN_SHARED_PREF, true);
+                    editor.putString(Config.EMAIL_SHARED_PREF, mobilenumber.getText().toString());
 
-                    editor2.commit();
+                    editor.commit();
 
                     Toast.makeText(EditMainActivity.this, "Modification Successfully", Toast.LENGTH_SHORT).show();
                     Intent i = new Intent(EditMainActivity.this, MapsActivity.class);
