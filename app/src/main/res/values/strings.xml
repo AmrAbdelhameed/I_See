@@ -1,4 +1,4 @@
 <resources>
-    <string name="app_name">I_See</string>
-    <string name="title_activity_maps">Map</string>
+    <string name="app_name">I See</string>
+    <string name="title_activity_maps">Device Location</string>
 </resources>
