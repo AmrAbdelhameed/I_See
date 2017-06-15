@@ -6,6 +6,9 @@ import android.content.SharedPreferences;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.support.v7.widget.Toolbar;
+import android.view.KeyEvent;
+import android.view.Menu;
+import android.view.MenuItem;
 import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
@@ -15,7 +18,7 @@ public class MainActivity extends AppCompatActivity {
 
     EditText mobilenumber;
     Button bTnSave;
-    private boolean loggedIn = false;
+    private DBHelper mydb;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -24,6 +27,9 @@ public class MainActivity extends AppCompatActivity {
 
         Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar1);
         setSupportActionBar(toolbar);
+        getSupportActionBar().setDisplayHomeAsUpEnabled(true);
+
+        mydb = new DBHelper(this);
 
         mobilenumber = (EditText) findViewById(R.id.mobile);
         bTnSave = (Button) findViewById(R.id.button1);
@@ -34,17 +40,13 @@ public class MainActivity extends AppCompatActivity {
                 if (mobilenumber.getText().toString().isEmpty()) {
                     Toast.makeText(MainActivity.this, "Enter device's mobile number", Toast.LENGTH_SHORT).show();
                 } else {
-                    SharedPreferences sharedPreferences = MainActivity.this.getSharedPreferences(Config.SHARED_PREF_NAME, Context.MODE_PRIVATE);
-
-                    SharedPreferences.Editor editor = sharedPreferences.edit();
-
-                    editor.putBoolean(Config.LOGGEDIN_SHARED_PREF, true);
-                    editor.putString(Config.EMAIL_SHARED_PREF, mobilenumber.getText().toString());
-
-                    editor.commit();
-
-                    Intent i = new Intent(MainActivity.this, MapsActivity.class);
-                    startActivity(i);
+                    if (mydb.insertContact(mobilenumber.getText().toString())) {
+                        Toast.makeText(MainActivity.this, "Done", Toast.LENGTH_SHORT).show();
+                    } else {
+                        Toast.makeText(MainActivity.this, "Not Done ... Try Again", Toast.LENGTH_SHORT).show();
+                    }
+                    Intent intent = new Intent(MainActivity.this, FirstActivity.class);
+                    startActivity(intent);
                     finish();
                 }
 
@@ -53,20 +55,32 @@ public class MainActivity extends AppCompatActivity {
     }
 
     @Override
-    protected void onResume() {
-        super.onResume();
-        //In onresume fetching value from sharedpreference
-        SharedPreferences sharedPreferences = getSharedPreferences(Config.SHARED_PREF_NAME, Context.MODE_PRIVATE);
+    public boolean onCreateOptionsMenu(Menu menu) {
+        return true;
+    }
 
-        //Fetching the boolean value form sharedpreferences
-        loggedIn = sharedPreferences.getBoolean(Config.LOGGEDIN_SHARED_PREF, false);
+    @Override
+    public boolean onOptionsItemSelected(MenuItem item) {
+        int id = item.getItemId();
+        if (id == android.R.id.home) {
 
-        //If we will get true
-        if (loggedIn) {
-            //We will start the Profile Activity
-            Intent intent = new Intent(MainActivity.this, MapsActivity.class);
-            startActivity(intent);
+            Intent i = new Intent(MainActivity.this, FirstActivity.class);
+            startActivity(i);
             finish();
+
+            return true;
         }
+        return super.onOptionsItemSelected(item);
+    }
+
+    public boolean onKeyDown(int keycode, KeyEvent event) {
+        if (keycode == KeyEvent.KEYCODE_BACK) {
+
+            Intent i = new Intent(MainActivity.this, FirstActivity.class);
+            startActivity(i);
+            finish();
+
+        }
+        return super.onKeyDown(keycode, event);
     }
 }

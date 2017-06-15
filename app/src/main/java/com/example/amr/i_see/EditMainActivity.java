@@ -7,6 +7,7 @@ import android.support.v4.app.ActivityCompat;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.support.v7.widget.Toolbar;
+import android.view.KeyEvent;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
@@ -18,7 +19,8 @@ public class EditMainActivity extends AppCompatActivity {
 
     EditText mobilenumber;
     Button bTnSave;
-    String u = "";
+    String idd = "";
+    String number = "";
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -32,34 +34,30 @@ public class EditMainActivity extends AppCompatActivity {
         mobilenumber = (EditText) findViewById(R.id.editmobilenumber);
         bTnSave = (Button) findViewById(R.id.button2);
 
-        SharedPreferences sharedPreferences = getSharedPreferences(Config.SHARED_PREF_NAME, Context.MODE_PRIVATE);
-        u = sharedPreferences.getString(Config.EMAIL_SHARED_PREF, "Not Available");
+        Bundle extras = getIntent().getExtras();
+        idd = extras.getString("id");
+        number = extras.getString("number");
 
-        mobilenumber.setText(u);
+        mobilenumber.setText(number);
 
         bTnSave.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
                 if (mobilenumber.getText().toString().isEmpty()) {
                     Toast.makeText(EditMainActivity.this, "Enter device's mobile number", Toast.LENGTH_SHORT).show();
-                } else if (mobilenumber.getText().toString().equals(u)) {
+                } else if (mobilenumber.getText().toString().equals(number)) {
                     Toast.makeText(EditMainActivity.this, "Nothing New", Toast.LENGTH_SHORT).show();
+
+                    Bundle dataBundle = new Bundle();
+                    dataBundle.putString("id", idd);
+                    dataBundle.putString("number", number);
+
+                    Intent intent = new Intent(EditMainActivity.this, MapsActivity.class);
+                    intent.putExtras(dataBundle);
+                    startActivity(intent);
                     finish();
                 } else {
-
-                    SharedPreferences sharedPreferences = EditMainActivity.this.getSharedPreferences(Config.SHARED_PREF_NAME, Context.MODE_PRIVATE);
-
-                    SharedPreferences.Editor editor = sharedPreferences.edit();
-
-                    editor.putBoolean(Config.LOGGEDIN_SHARED_PREF, true);
-                    editor.putString(Config.EMAIL_SHARED_PREF, mobilenumber.getText().toString());
-
-                    editor.commit();
-
-                    Toast.makeText(EditMainActivity.this, "Modification Successfully", Toast.LENGTH_SHORT).show();
-                    Intent i = new Intent(EditMainActivity.this, MapsActivity.class);
-                    startActivity(i);
-                    finish();
+                    Toast.makeText(EditMainActivity.this, idd, Toast.LENGTH_SHORT).show();
                 }
 
             }
@@ -76,12 +74,33 @@ public class EditMainActivity extends AppCompatActivity {
         int id = item.getItemId();
         if (id == android.R.id.home) {
 
-            Intent i = new Intent(EditMainActivity.this, MapsActivity.class);
-            startActivity(i);
+            Bundle dataBundle = new Bundle();
+            dataBundle.putString("id", idd);
+            dataBundle.putString("number", number);
+
+            Intent intent = new Intent(EditMainActivity.this, MapsActivity.class);
+            intent.putExtras(dataBundle);
+            startActivity(intent);
             finish();
 
             return true;
         }
         return super.onOptionsItemSelected(item);
+    }
+
+    public boolean onKeyDown(int keycode, KeyEvent event) {
+        if (keycode == KeyEvent.KEYCODE_BACK) {
+
+            Bundle dataBundle = new Bundle();
+            dataBundle.putString("id", idd);
+            dataBundle.putString("number", number);
+
+            Intent intent = new Intent(EditMainActivity.this, MapsActivity.class);
+            intent.putExtras(dataBundle);
+            startActivity(intent);
+            finish();
+
+        }
+        return super.onKeyDown(keycode, event);
     }
 }

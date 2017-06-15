@@ -15,6 +15,7 @@ import android.support.v4.app.FragmentActivity;
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
+import android.view.KeyEvent;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.widget.Toast;
@@ -26,10 +27,13 @@ import com.google.android.gms.maps.SupportMapFragment;
 import com.google.android.gms.maps.model.LatLng;
 import com.google.android.gms.maps.model.MarkerOptions;
 
+import java.util.Map;
+
 public class MapsActivity extends AppCompatActivity implements OnMapReadyCallback {
 
     private GoogleMap mMap;
-    String u = "";
+    String idd = "";
+    String number = "";
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -38,11 +42,13 @@ public class MapsActivity extends AppCompatActivity implements OnMapReadyCallbac
 
         Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
+        getSupportActionBar().setDisplayHomeAsUpEnabled(true);
 
-        SharedPreferences sharedPreferences = getSharedPreferences(Config.SHARED_PREF_NAME, Context.MODE_PRIVATE);
-        u = sharedPreferences.getString(Config.EMAIL_SHARED_PREF, "Not Available");
-        Toast.makeText(this, u, Toast.LENGTH_SHORT).show();
+        Bundle extras = getIntent().getExtras();
+        idd = extras.getString("id");
+        number = extras.getString("number");
 
+        Toast.makeText(this, idd + " -- " + number, Toast.LENGTH_SHORT).show();
         // Obtain the SupportMapFragment and get notified when the map is ready to be used.
         SupportMapFragment mapFragment = (SupportMapFragment) getSupportFragmentManager()
                 .findFragmentById(R.id.map);
@@ -91,27 +97,44 @@ public class MapsActivity extends AppCompatActivity implements OnMapReadyCallbac
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
         int id = item.getItemId();
+        if (id == android.R.id.home) {
+
+            Intent i = new Intent(MapsActivity.this, FirstActivity.class);
+            startActivity(i);
+            finish();
+
+            return true;
+        }
 
         //noinspection SimplifiableIfStatement
         if (id == R.id.edit_number) {
 
-            Intent i = new Intent(MapsActivity.this, EditMainActivity.class);
-            startActivity(i);
+            Bundle dataBundle = new Bundle();
+            dataBundle.putString("id", idd);
+            dataBundle.putString("number", number);
+
+            Intent intent = new Intent(MapsActivity.this, EditMainActivity.class);
+            intent.putExtras(dataBundle);
+            startActivity(intent);
             finish();
 
             return true;
         } else if (id == R.id.calling_number) {
 
-            startActivity(new Intent(Intent.ACTION_DIAL, Uri.fromParts("tel", u, null)));
+            startActivity(new Intent(Intent.ACTION_DIAL, Uri.fromParts("tel", number, null)));
 
             return true;
         }
         return super.onOptionsItemSelected(item);
     }
-    private boolean isNetworkAvailable() {
-        ConnectivityManager connectivityManager
-                = (ConnectivityManager) getSystemService(this.CONNECTIVITY_SERVICE);
-        NetworkInfo activeNetworkInfo = connectivityManager.getActiveNetworkInfo();
-        return activeNetworkInfo != null && activeNetworkInfo.isConnected();
+    public boolean onKeyDown(int keycode, KeyEvent event) {
+        if (keycode == KeyEvent.KEYCODE_BACK) {
+
+            Intent i = new Intent(MapsActivity.this, FirstActivity.class);
+            startActivity(i);
+            finish();
+
+        }
+        return super.onKeyDown(keycode, event);
     }
 }
