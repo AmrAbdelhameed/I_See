@@ -16,7 +16,6 @@ public class DBHelper extends SQLiteOpenHelper {
     public static final String CONTACTS_TABLE_NAME = "numbers";
     public static final String CONTACTS_COLUMN_ID = "id";
     public static final String CONTACTS_COLUMN_NUMBER = "number";
-    private HashMap hp;
 
     public DBHelper(Context context) {
         super(context, DATABASE_NAME, null, 1);
@@ -38,7 +37,7 @@ public class DBHelper extends SQLiteOpenHelper {
         onCreate(db);
     }
 
-    public boolean insertContact(String number) {
+    public boolean insertNumber(String number) {
         SQLiteDatabase db = this.getWritableDatabase();
         ContentValues contentValues = new ContentValues();
         contentValues.put("number", number);
@@ -46,30 +45,34 @@ public class DBHelper extends SQLiteOpenHelper {
         return true;
     }
 
-    public ArrayList<String> getAllNumbers()
-    {
+    public boolean updateNumber(String id, String number) {
+        SQLiteDatabase db = this.getWritableDatabase();
+        ContentValues contentValues = new ContentValues();
+        contentValues.put("number", number);
+        db.update("numbers", contentValues, "id = ? ", new String[]{id});
+        return true;
+    }
+
+    public ArrayList<String> getAllNumbers() {
         ArrayList<String> array_list = new ArrayList<String>();
-        //hp = new HashMap();
         SQLiteDatabase db = this.getReadableDatabase();
-        Cursor res =  db.rawQuery( "select * from numbers", null );
+        Cursor res = db.rawQuery("select * from numbers", null);
         res.moveToFirst();
 
-        while(res.isAfterLast() == false){
+        while (res.isAfterLast() == false) {
             array_list.add(res.getString(res.getColumnIndex(CONTACTS_COLUMN_NUMBER)));
             res.moveToNext();
         }
         return array_list;
     }
 
-    public ArrayList<String> getAllIDs()
-    {
+    public ArrayList<String> getAllIDs() {
         ArrayList<String> array_list = new ArrayList<String>();
-        //hp = new HashMap();
         SQLiteDatabase db = this.getReadableDatabase();
-        Cursor res =  db.rawQuery( "select * from numbers", null );
+        Cursor res = db.rawQuery("select * from numbers", null);
         res.moveToFirst();
 
-        while(res.isAfterLast() == false){
+        while (res.isAfterLast() == false) {
             array_list.add(res.getString(res.getColumnIndex(CONTACTS_COLUMN_ID)));
             res.moveToNext();
         }

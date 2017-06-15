@@ -18,7 +18,7 @@ public class MainActivity extends AppCompatActivity {
 
     EditText mobilenumber;
     Button bTnSave;
-    private DBHelper mydb;
+    DBHelper mydb;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -40,7 +40,7 @@ public class MainActivity extends AppCompatActivity {
                 if (mobilenumber.getText().toString().isEmpty()) {
                     Toast.makeText(MainActivity.this, "Enter device's mobile number", Toast.LENGTH_SHORT).show();
                 } else {
-                    if (mydb.insertContact(mobilenumber.getText().toString())) {
+                    if (mydb.insertNumber(mobilenumber.getText().toString())) {
                         Toast.makeText(MainActivity.this, "Done", Toast.LENGTH_SHORT).show();
                     } else {
                         Toast.makeText(MainActivity.this, "Not Done ... Try Again", Toast.LENGTH_SHORT).show();

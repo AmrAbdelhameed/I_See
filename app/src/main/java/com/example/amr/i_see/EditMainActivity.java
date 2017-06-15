@@ -19,6 +19,7 @@ public class EditMainActivity extends AppCompatActivity {
 
     EditText mobilenumber;
     Button bTnSave;
+    DBHelper mydb;
     String idd = "";
     String number = "";
 
@@ -26,6 +27,8 @@ public class EditMainActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_edit_main);
+
+        mydb = new DBHelper(this);
 
         Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar2);
         setSupportActionBar(toolbar);
@@ -57,7 +60,19 @@ public class EditMainActivity extends AppCompatActivity {
                     startActivity(intent);
                     finish();
                 } else {
-                    Toast.makeText(EditMainActivity.this, idd, Toast.LENGTH_SHORT).show();
+                    if (mydb.updateNumber(idd, mobilenumber.getText().toString())) {
+                        Toast.makeText(EditMainActivity.this, "Updated Successfully", Toast.LENGTH_SHORT).show();
+                    } else {
+                        Toast.makeText(EditMainActivity.this, "Not Updated", Toast.LENGTH_SHORT).show();
+                    }
+                    Bundle dataBundle = new Bundle();
+                    dataBundle.putString("id", idd);
+                    dataBundle.putString("number", mobilenumber.getText().toString());
+
+                    Intent intent = new Intent(EditMainActivity.this, MapsActivity.class);
+                    intent.putExtras(dataBundle);
+                    startActivity(intent);
+                    finish();
                 }
 
             }

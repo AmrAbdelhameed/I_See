@@ -15,7 +15,7 @@ import java.util.ArrayList;
 
 public class FirstActivity extends AppCompatActivity {
     DBHelper mydb;
-    private ListView obj;
+    ListView obj;
     ArrayAdapter arrayAdapter;
     ArrayList array_list_numbrs, array_list_ids;
 
