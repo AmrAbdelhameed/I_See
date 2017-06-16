@@ -55,24 +55,29 @@ public class EditMainActivity extends AppCompatActivity {
                     dataBundle.putString("id", idd);
                     dataBundle.putString("number", number);
 
+                    finish();
+                    overridePendingTransition(0, 0);
                     Intent intent = new Intent(EditMainActivity.this, MapsActivity.class);
                     intent.putExtras(dataBundle);
                     startActivity(intent);
-                    finish();
+                    overridePendingTransition(0, 0);
+
                 } else {
                     if (mydb.updateNumber(idd, mobilenumber.getText().toString())) {
                         Toast.makeText(EditMainActivity.this, "Updated Successfully", Toast.LENGTH_SHORT).show();
                     } else {
-                        Toast.makeText(EditMainActivity.this, "Not Updated", Toast.LENGTH_SHORT).show();
+                        Toast.makeText(EditMainActivity.this, "Not Updated ...", Toast.LENGTH_SHORT).show();
                     }
                     Bundle dataBundle = new Bundle();
                     dataBundle.putString("id", idd);
                     dataBundle.putString("number", mobilenumber.getText().toString());
 
+                    finish();
+                    overridePendingTransition(0, 0);
                     Intent intent = new Intent(EditMainActivity.this, MapsActivity.class);
                     intent.putExtras(dataBundle);
                     startActivity(intent);
-                    finish();
+                    overridePendingTransition(0, 0);
                 }
 
             }
@@ -93,10 +98,12 @@ public class EditMainActivity extends AppCompatActivity {
             dataBundle.putString("id", idd);
             dataBundle.putString("number", number);
 
+            finish();
+            overridePendingTransition(0, 0);
             Intent intent = new Intent(EditMainActivity.this, MapsActivity.class);
             intent.putExtras(dataBundle);
             startActivity(intent);
-            finish();
+            overridePendingTransition(0, 0);
 
             return true;
         }
@@ -110,10 +117,12 @@ public class EditMainActivity extends AppCompatActivity {
             dataBundle.putString("id", idd);
             dataBundle.putString("number", number);
 
+            finish();
+            overridePendingTransition(0, 0);
             Intent intent = new Intent(EditMainActivity.this, MapsActivity.class);
             intent.putExtras(dataBundle);
             startActivity(intent);
-            finish();
+            overridePendingTransition(0, 0);
 
         }
         return super.onKeyDown(keycode, event);

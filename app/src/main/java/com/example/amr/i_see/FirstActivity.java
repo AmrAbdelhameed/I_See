@@ -33,9 +33,11 @@ public class FirstActivity extends AppCompatActivity {
         fab.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
+                finish();
+                overridePendingTransition(0, 0);
                 Intent i = new Intent(FirstActivity.this, MainActivity.class);
                 startActivity(i);
-                finish();
+                overridePendingTransition(0, 0);
             }
         });
 
@@ -58,10 +60,12 @@ public class FirstActivity extends AppCompatActivity {
                 dataBundle.putString("id", array_list_ids.get(pos).toString());
                 dataBundle.putString("number", array_list_numbrs.get(pos).toString());
 
+                finish();
+                overridePendingTransition(0, 0);
                 Intent intent = new Intent(FirstActivity.this, MapsActivity.class);
                 intent.putExtras(dataBundle);
                 startActivity(intent);
-                finish();
+                overridePendingTransition(0, 0);
             }
         });
         obj.setOnItemLongClickListener(new AdapterView.OnItemLongClickListener() {

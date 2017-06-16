@@ -41,13 +41,15 @@ public class MainActivity extends AppCompatActivity {
                     Toast.makeText(MainActivity.this, "Enter device's mobile number", Toast.LENGTH_SHORT).show();
                 } else {
                     if (mydb.insertNumber(mobilenumber.getText().toString())) {
-                        Toast.makeText(MainActivity.this, "Done", Toast.LENGTH_SHORT).show();
+                        Toast.makeText(MainActivity.this, "Added Successfully", Toast.LENGTH_SHORT).show();
                     } else {
-                        Toast.makeText(MainActivity.this, "Not Done ... Try Again", Toast.LENGTH_SHORT).show();
+                        Toast.makeText(MainActivity.this, "Not Added ...", Toast.LENGTH_SHORT).show();
                     }
+                    finish();
+                    overridePendingTransition(0, 0);
                     Intent intent = new Intent(MainActivity.this, FirstActivity.class);
                     startActivity(intent);
-                    finish();
+                    overridePendingTransition(0, 0);
                 }
 
             }
@@ -64,9 +66,11 @@ public class MainActivity extends AppCompatActivity {
         int id = item.getItemId();
         if (id == android.R.id.home) {
 
+            finish();
+            overridePendingTransition(0, 0);
             Intent i = new Intent(MainActivity.this, FirstActivity.class);
             startActivity(i);
-            finish();
+            overridePendingTransition(0, 0);
 
             return true;
         }
@@ -76,9 +80,11 @@ public class MainActivity extends AppCompatActivity {
     public boolean onKeyDown(int keycode, KeyEvent event) {
         if (keycode == KeyEvent.KEYCODE_BACK) {
 
+            finish();
+            overridePendingTransition(0, 0);
             Intent i = new Intent(MainActivity.this, FirstActivity.class);
             startActivity(i);
-            finish();
+            overridePendingTransition(0, 0);
 
         }
         return super.onKeyDown(keycode, event);

@@ -48,7 +48,8 @@ public class MapsActivity extends AppCompatActivity implements OnMapReadyCallbac
         idd = extras.getString("id");
         number = extras.getString("number");
 
-        Toast.makeText(this, idd + " -- " + number, Toast.LENGTH_SHORT).show();
+        //  Toast.makeText(this, idd + " -- " + number, Toast.LENGTH_SHORT).show();
+
         // Obtain the SupportMapFragment and get notified when the map is ready to be used.
         SupportMapFragment mapFragment = (SupportMapFragment) getSupportFragmentManager()
                 .findFragmentById(R.id.map);
@@ -99,9 +100,11 @@ public class MapsActivity extends AppCompatActivity implements OnMapReadyCallbac
         int id = item.getItemId();
         if (id == android.R.id.home) {
 
+            finish();
+            overridePendingTransition(0, 0);
             Intent i = new Intent(MapsActivity.this, FirstActivity.class);
             startActivity(i);
-            finish();
+            overridePendingTransition(0, 0);
 
             return true;
         }
@@ -113,15 +116,18 @@ public class MapsActivity extends AppCompatActivity implements OnMapReadyCallbac
             dataBundle.putString("id", idd);
             dataBundle.putString("number", number);
 
+            finish();
+            overridePendingTransition(0, 0);
             Intent intent = new Intent(MapsActivity.this, EditMainActivity.class);
             intent.putExtras(dataBundle);
             startActivity(intent);
-            finish();
+            overridePendingTransition(0, 0);
 
             return true;
         } else if (id == R.id.calling_number) {
 
             startActivity(new Intent(Intent.ACTION_DIAL, Uri.fromParts("tel", number, null)));
+            overridePendingTransition(0, 0);
 
             return true;
         }
@@ -131,9 +137,11 @@ public class MapsActivity extends AppCompatActivity implements OnMapReadyCallbac
     public boolean onKeyDown(int keycode, KeyEvent event) {
         if (keycode == KeyEvent.KEYCODE_BACK) {
 
+            finish();
+            overridePendingTransition(0, 0);
             Intent i = new Intent(MapsActivity.this, FirstActivity.class);
             startActivity(i);
-            finish();
+            overridePendingTransition(0, 0);
 
         }
         return super.onKeyDown(keycode, event);
