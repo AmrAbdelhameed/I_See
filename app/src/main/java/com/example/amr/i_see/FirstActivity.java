@@ -1,5 +1,7 @@
 package com.example.amr.i_see;
 
+import android.app.AlertDialog;
+import android.content.DialogInterface;
 import android.content.Intent;
 import android.os.Bundle;
 import android.support.design.widget.FloatingActionButton;
@@ -10,6 +12,7 @@ import android.view.View;
 import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.ListView;
+import android.widget.Toast;
 
 import java.util.ArrayList;
 
@@ -59,6 +62,35 @@ public class FirstActivity extends AppCompatActivity {
                 intent.putExtras(dataBundle);
                 startActivity(intent);
                 finish();
+            }
+        });
+        obj.setOnItemLongClickListener(new AdapterView.OnItemLongClickListener() {
+
+            public boolean onItemLongClick(AdapterView<?> arg0, View v,
+                                           final int index, long arg3) {
+
+                AlertDialog.Builder builder = new AlertDialog.Builder(FirstActivity.this);
+                builder.setMessage("Do you want to delete " + array_list_numbrs.get(index) + " ?")
+                        .setPositiveButton("Yes", new DialogInterface.OnClickListener() {
+                            public void onClick(DialogInterface dialog, int id) {
+
+                                mydb.deleteNumber(array_list_ids.get(index).toString());
+                                Toast.makeText(FirstActivity.this, "Deleted Successfully", Toast.LENGTH_SHORT).show();
+                                finish();
+                                overridePendingTransition(0, 0);
+                                startActivity(getIntent());
+                                overridePendingTransition(0, 0);
+
+                            }
+                        }).setNegativeButton("No", new DialogInterface.OnClickListener() {
+                    public void onClick(DialogInterface dialog, int id) {
+                        // Nothing
+                    }
+                });
+                AlertDialog d = builder.create();
+                d.setTitle("Are you sure");
+                d.show();
+                return true;
             }
         });
     }
